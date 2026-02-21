@@ -1,0 +1,61 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 18
+  },
+  "configurePresets": [
+    {
+      "name": "msvc-x64",
+      "displayName": "Visual Studio 2022 x64",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "cacheVariables": {
+        "TARGET_ARCH": "x64"
+      }
+    },
+    {
+      "name": "msvc-x86",
+      "displayName": "Visual Studio 2022 x86",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "Win32",
+      "cacheVariables": {
+        "TARGET_ARCH": "x86"
+      }
+    },
+    {
+      "name": "msvc-arm64",
+      "displayName": "Visual Studio 2022 ARM64",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "ARM64",
+      "cacheVariables": {
+        "TARGET_ARCH": "arm64"
+      }
+    },
+    {
+      "name": "ninja-linux-x64",
+      "displayName": "Ninja x64 (Linux)",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "TARGET_ARCH": "x64"
+      }
+    },
+    {
+      "name": "ninja-linux-arm64",
+      "displayName": "Ninja aarch64 (Linux)",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "TARGET_ARCH": "arm64"
+      }
+    },
+    {
+      "name": "android-arm64",
+      "displayName": "Android NDK arm64",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "TARGET_ARCH": "arm64",
+        "ANDROID_ABI": "arm64-v8a"
+      }
+    }
+  ]
+}

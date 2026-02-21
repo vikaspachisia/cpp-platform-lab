@@ -1,0 +1,37 @@
+# cmake/helpers/show_invocations.cmake
+# Prints recommended CMake invocations and presets based on the host.
+if(NOT DEFINED CMAKE_HOST_SYSTEM_NAME)
+  set(CMAKE_HOST_SYSTEM_NAME "${CMAKE_SYSTEM_NAME}")
+endif()
+
+message(STATUS "cpp-platform-lab invocation helper")
+message(STATUS "Host: ${CMAKE_HOST_SYSTEM_NAME} / processor: ${CMAKE_HOST_SYSTEM_PROCESSOR}")
+
+message(STATUS "")
+message(STATUS "Common (Ninja, RelWithDebInfo):")
+message(STATUS "  cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo")
+message(STATUS "  cmake --build build -j")
+
+if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Windows")
+  message(STATUS "")
+  message(STATUS "Visual Studio 2022 example (x64):")
+  message(STATUS "  cmake -S . -B build-vs-x64 -G \"Visual Studio 17 2022\" -A x64")
+  message(STATUS "  cmake --build build-vs-x64 --config Release")
+elseif(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin")
+  message(STATUS "")
+  message(STATUS "macOS (Xcode generator example):")
+  message(STATUS "  cmake -S . -B build-mac -G Xcode -DTARGET_ARCH=arm64")
+  message(STATUS "iOS device (Xcode + toolchain):")
+  message(STATUS "  cmake -S . -B build-ios -G Xcode -DCMAKE_TOOLCHAIN_FILE=cmake/Toolchain-iOS.cmake -DCMAKE_OSX_SYSROOT=iphoneos -DTARGET_ARCH=arm64")
+else()
+  message(STATUS "")
+  message(STATUS "Linux (native x64):")
+  message(STATUS "  cmake -S . -B build -G Ninja -DTARGET_ARCH=x64")
+  message(STATUS "Cross-compile aarch64 (example):")
+  message(STATUS "  cmake -S . -B build-aarch64 -DCMAKE_TOOLCHAIN_FILE=cmake/toolchains/aarch64-linux-gnu.cmake -DTARGET_ARCH=arm64")
+endif()
+
+message(STATUS "")
+message(STATUS "Use presets (if present):")
+message(STATUS "  cmake --list-presets")
+message(STATUS "  cmake --preset ninja-linux-x64")
