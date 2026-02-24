@@ -10,9 +10,17 @@ target_link_libraries(platform_app PRIVATE platformlib)
 # register the app and the expected run output regex
 register_app(platform_app RUN_REGEX "library returned 0")
 
-# Example: explicit runtime loader
-add_executable(loader_app loader.cpp)
-target_include_directories(loader_app PRIVATE ${CMAKE_SOURCE_DIR}/lib)
+# Example: explicit runtime loader (platform-specific implementation)
+set(LOADER_IMPL_SRC "")
+
+if(WIN32)
+  list(APPEND LOADER_IMPL_SRC ${CMAKE_CURRENT_SOURCE_DIR}/loader_win.cpp)
+else()
+  list(APPEND LOADER_IMPL_SRC ${CMAKE_CURRENT_SOURCE_DIR}/loader_posix.cpp)
+endif()
+
+add_executable(loader_app ${CMAKE_CURRENT_SOURCE_DIR}/loader.cpp ${LOADER_IMPL_SRC})
+target_include_directories(loader_app PRIVATE ${CMAKE_SOURCE_DIR}/lib ${CMAKE_CURRENT_SOURCE_DIR})
 # loader app uses runtime loading; expect it to print the platformlib message
 register_app(loader_app RUN_REGEX "platformlib: running")
 
