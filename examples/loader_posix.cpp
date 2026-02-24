@@ -1,10 +1,12 @@
 #include "loader.h"
+#include "platform_factory.h"
 #include <dlfcn.h>
 #include <string>
 #include <vector>
 #include <iostream>
 #include <memory>
 
+// Concrete product: PosixLoader
 class PosixLoader : public Loader
 {
 public:
@@ -48,7 +50,17 @@ private:
     void *handle_;
 };
 
-std::unique_ptr<Loader> make_loader()
+// Concrete factory: PosixFactory produces PosixLoader
+class PosixFactory : public PlatformFactory
 {
-    return std::make_unique<PosixLoader>();
+public:
+    std::unique_ptr<Loader> create_loader() override
+    {
+        return std::make_unique<PosixLoader>();
+    }
+};
+
+std::unique_ptr<PlatformFactory> make_platform_factory()
+{
+    return std::make_unique<PosixFactory>();
 }

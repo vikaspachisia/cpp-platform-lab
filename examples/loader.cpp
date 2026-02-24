@@ -1,5 +1,6 @@
 #include "platform.h"
 #include "loader.h"
+#include "platform_factory.h"
 #include <iostream>
 #include <string>
 
@@ -7,7 +8,13 @@ int main()
 {
     std::cout << "loader_app: runtime loading library\n";
 
-    auto loader = make_loader();
+    auto factory = make_platform_factory();
+    if (!factory) {
+        std::cerr << "loader_app: failed to create platform factory\n";
+        return 1;
+    }
+
+    auto loader = factory->create_loader();
     if (!loader) {
         std::cerr << "loader_app: failed to create platform loader\n";
         return 1;

@@ -1,9 +1,11 @@
 #include "loader.h"
+#include "platform_factory.h"
 #include <windows.h>
 #include <string>
 #include <iostream>
 #include <memory>
 
+// Concrete product: WinLoader
 class WinLoader : public Loader
 {
 public:
@@ -39,7 +41,17 @@ private:
     HMODULE handle_;
 };
 
-std::unique_ptr<Loader> make_loader()
+// Concrete factory: WinFactory produces WinLoader
+class WinFactory : public PlatformFactory
 {
-    return std::make_unique<WinLoader>();
+public:
+    std::unique_ptr<Loader> create_loader() override
+    {
+        return std::make_unique<WinLoader>();
+    }
+};
+
+std::unique_ptr<PlatformFactory> make_platform_factory()
+{
+    return std::make_unique<WinFactory>();
 }
